@@ -3,6 +3,8 @@ import java.util.Optional;
 
 public class PlayList implements Cloneable {
 
+
+//instance variables
     private final static int max = 50;
 
     private SongRecord[] songRecords;
@@ -67,6 +69,14 @@ public class PlayList implements Cloneable {
         return size;
     }
 
+    /**
+     *
+     * @param songRecord
+     * @param position
+     * this method adds a song to our singleton playList , checks for fullcapcity exception , and illegal argument exception
+     * which is later caught in the main
+     *
+     */
     public void addSong(SongRecord songRecord, int position) {
         if (position < 0 || position > max)
             throw new IllegalArgumentException("position is not within valid range");
@@ -94,7 +104,12 @@ public class PlayList implements Cloneable {
         }
     }
 
-
+    /**
+     * this method removes a song from the playList by accepting a int position . The position corresponds to the index of the array
+     * if the index is oit of bounf it throws illegal argument exception
+     * @param position
+     * @throws IllegalArgumentException
+     */
     public void removeSong(int position) throws IllegalArgumentException {
 
         if (position > max) throw new IllegalArgumentException("position is not within the valid range");
@@ -110,6 +125,14 @@ public class PlayList implements Cloneable {
         size--;
     }
 
+    /**
+     * this method get songs by a given artist. Accepts a string input for artist name and traverses the playlist to pick
+     * songs that matches the artist name using equal operator for strings  it also ignores null values so as to not return nullpointerexceptiona
+     * and if there is no match found returns a null value
+     * @param originalList
+     * @param artist
+     * @return
+     */
     public PlayList getSongsByArtist(PlayList originalList, String artist) {
 
         SongRecord[] recordsByArtists = new SongRecord[max];
@@ -128,13 +151,21 @@ public class PlayList implements Cloneable {
             return new PlayList(recordsByArtists);
     }
 
-
+    /**
+     * this method accepts int position as an input to return the song in the playlist a that index of the array
+      * @param pos
+     * @return
+     */
     public SongRecord getSong(int pos) {
         if (pos < 0 || pos > max)
             throw new IllegalArgumentException("The song position is in invalid range . Please enter a valid positio (1-50)");
         return this.getSongRecords()[pos];
     }
 
+    /**
+     * this void method simply traverses over the playlist concatenating strings returned by all the SongRecords to String method which basically
+     *return their member field and value of the object
+     */
     public void printAllSongs() {
         int pos = 0;
         for (SongRecord song : this.getSongRecords()) {
@@ -149,7 +180,6 @@ public class PlayList implements Cloneable {
         String s = "";
         for (SongRecord song : this.getSongRecords()) {
             if (Optional.ofNullable(song).isPresent()) {
-
                 s = s + song.toString() + "\n";
             }
         }

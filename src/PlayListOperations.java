@@ -17,19 +17,20 @@ public class PlayListOperations {
 
     }
 
-
+//allows user to take string input in reusable fashion
     public static String takeInputString() {
         Scanner scanner = new Scanner(System.in);
         String menuOption = scanner.nextLine();
         return menuOption;
     }
 
-
+// allows user to take input of an integer value in a reusable fashion
     public static int takeInputInt() {
         Scanner intScanner = new Scanner(System.in);
         return intScanner.nextInt();
     }
 
+    //simply a static method to take user input and call addSong method on the playList
     public static void addSong() {
         System.out.println("Enter the Song Title : ");
         String songTitle = takeInputString();
