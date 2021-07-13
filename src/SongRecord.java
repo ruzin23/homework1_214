@@ -1,14 +1,14 @@
 public class SongRecord {
 
-private String title;
+    private String title;
 
-private String artist;
+    private String artist;
 
-private int minutes;
+    private int minutes;
 
-private int seconds;
+    private int seconds;
 
-//Paramterized constructor
+    //Paramterized constructor
     public SongRecord(String title, String artist, int minutes, int seconds) {
         this.title = title;
         this.artist = artist;
@@ -17,8 +17,8 @@ private int seconds;
     }
 
     //Default constructor
-    public SongRecord()
-    {}
+    public SongRecord() {
+    }
 
     public String getTitle() {
         return title;
@@ -52,8 +52,10 @@ private int seconds;
         this.seconds = seconds;
     }
 
-
-
+    @Override
+    public String toString() {
+        return "Song title : " + this.title + "\n" + "Artist : " + this.artist + "\n" + "minutes : " + this.minutes + "\n" + "seconds: " + this.seconds + "\n";
+    }
 
 
 }

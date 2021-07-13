@@ -1,4 +1,5 @@
-import java.lang.reflect.Array;
+
+import java.util.Optional;
 
 public class PlayList {
 
@@ -71,40 +72,46 @@ public class PlayList {
         if (size >= max)
             throw new FullPlayListException("No more room for songs . Play;ist reached its max capacity");
 
-        SongRecord[] newRecordList = new SongRecord[50];
-        for (int i = 0; i <= this.size; i++) {
-            if (i < position) {
-                newRecordList[i] = songRecords[i];
-            } else if (i == position)
-                newRecordList[i] = songRecord;
-            else {
-                newRecordList[i] = songRecords[i - 1];
+        if (!Optional.ofNullable(songRecords[position]).isPresent()) {
+            System.out.println("no clash");
+            songRecords[position] = songRecord;
+            size++;
+        } else {
+            SongRecord[] newRecordList = new SongRecord[50];
+            for (int i = 0; i < max; i++) {
+                if (i < position) {
+                    newRecordList[i] = songRecords[i];
+                } else if (i == position)
+                    newRecordList[i] = songRecord;
+                else {
+                    newRecordList[i] = songRecords[i - 1];
+                }
             }
+            this.setSongRecords(newRecordList);
+            size++;
         }
     }
 
 
-    public void removeSong(int position) throws IllegalArgumentException{
+    public void removeSong(int position) throws IllegalArgumentException {
 
-        if (position > size) throw new IllegalArgumentException("position is not within the valid range");
-        for(int i =0;i< this.size-1 ;i++){
-            if (i >= position)
-            {
-                this.songRecords[i] = this.songRecords[i+1];
+        if (position > max) throw new IllegalArgumentException("position is not within the valid range");
+        for (int i = 0; i < max - 1; i++) {
+            if (i >= position) {
+                this.songRecords[i] = this.songRecords[i + 1];
             }
 
         }
+        size--;
     }
 
-public static PlayList getSongsByArtist(PlayList originalList, String artist){
+    public PlayList getSongsByArtist(PlayList originalList, String artist) {
 
         SongRecord[] recordsByArtists = new SongRecord[max];
-        int recordIndex= 0;
+        int recordIndex = 0;
         int recordSize = 0;
-        for(SongRecord record: originalList.getSongRecords())
-        {
-            if (record.getArtist().equals(artist))
-            {
+        for (SongRecord record : originalList.getSongRecords()) {
+            if (record.getArtist().equals(artist)) {
                 recordsByArtists[recordIndex] = record;
                 recordSize++;
             }
@@ -113,7 +120,24 @@ public static PlayList getSongsByArtist(PlayList originalList, String artist){
         if (recordSize == 0)
             return null;
         else
-        return new PlayList(recordsByArtists);
-}
+            return new PlayList(recordsByArtists);
+    }
+
+
+    public SongRecord getSong(int pos) {
+        if (pos < 0 || pos > max)
+            throw new IllegalArgumentException("The song position is in invalid range . Please enter a valid positio (1-50)");
+        return this.getSongRecords()[pos];
+    }
+
+    public void printAllSongs() {
+        int pos = 0;
+        for (SongRecord song : this.getSongRecords()) {
+            if (Optional.ofNullable(song).isPresent()) {
+                System.out.println(pos + ".) " + song.toString() + "\n");
+            }
+            pos++;
+        }
+    }
 
 }
