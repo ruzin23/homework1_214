@@ -1,7 +1,7 @@
 
 import java.util.Optional;
 
-public class PlayList {
+public class PlayList implements Cloneable {
 
     private final static int max = 50;
 
@@ -17,9 +17,11 @@ public class PlayList {
         this.songRecords = new SongRecord[max];
     }
 
+
+    //overriding the equals method of object PlayList
     @Override
     public boolean equals(Object obj) {
-        // If the object is compared with itself then return true
+
         if (obj == this) {
             return true;
         }
@@ -39,7 +41,7 @@ public class PlayList {
             return false;
     }
 
-
+    // deep cloning the mutable list
     @Override
     public Object clone() {
         SongRecord[] records = new SongRecord[this.max];
@@ -96,11 +98,14 @@ public class PlayList {
     public void removeSong(int position) throws IllegalArgumentException {
 
         if (position > max) throw new IllegalArgumentException("position is not within the valid range");
-        for (int i = 0; i < max - 1; i++) {
+        for (int i = 0; i < max ; i++) {
             if (i >= position) {
-                this.songRecords[i] = this.songRecords[i + 1];
+                if (position == max - 1) {
+                    this.songRecords[i] = null;
+                } else {
+                    this.songRecords[i] = this.songRecords[i + 1];
+                }
             }
-
         }
         size--;
     }
@@ -111,7 +116,7 @@ public class PlayList {
         int recordIndex = 0;
         int recordSize = 0;
         for (SongRecord record : originalList.getSongRecords()) {
-            if (record.getArtist().equals(artist)) {
+            if (Optional.ofNullable(record).isPresent() && record.getArtist().equals(artist)) {
                 recordsByArtists[recordIndex] = record;
                 recordSize++;
             }
@@ -140,4 +145,14 @@ public class PlayList {
         }
     }
 
+    public String toString() {
+        String s = "";
+        for (SongRecord song : this.getSongRecords()) {
+            if (Optional.ofNullable(song).isPresent()) {
+
+                s = s + song.toString() + "\n";
+            }
+        }
+        return s;
+    }
 }

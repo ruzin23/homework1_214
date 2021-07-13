@@ -25,13 +25,12 @@ public class PlayListOperations {
     }
 
 
-    public static int takeInputInt(){
+    public static int takeInputInt() {
         Scanner intScanner = new Scanner(System.in);
         return intScanner.nextInt();
     }
 
-    public static void addSong()
-    {
+    public static void addSong() {
         System.out.println("Enter the Song Title : ");
         String songTitle = takeInputString();
         System.out.println("Enter the song artist: ");
@@ -42,24 +41,22 @@ public class PlayListOperations {
         int lengthSeconds = takeInputInt();
         System.out.println("Enter the position: ");
         int pos = takeInputInt();
-        SongRecord song = new SongRecord(songTitle,artist,lengthMinutes,lengthSeconds);
-        playList.addSong(song,pos);
+        SongRecord song = new SongRecord(songTitle, artist, lengthMinutes, lengthSeconds);
+        playList.addSong(song, pos);
     }
 
-    public static void getSong()
-    {
+    public static void getSong() {
         System.out.println("Enter the position of song in playlist: ");
         playList.getSong(takeInputInt());
     }
 
-    public static void removeSong()
-    {
+    public static void removeSong() {
         System.out.println("Enter the position of the song to be removed : ");
         playList.removeSong(takeInputInt());
     }
 
 
-    public static void  processMenuOption(String input) {
+    public static void processMenuOption(String input) {
         input = input.toUpperCase();
         switch (input) {
 
@@ -68,35 +65,41 @@ public class PlayListOperations {
                 break;
             }
             case "P": {
-                 playList.printAllSongs();
-                 break;
+                System.out.println("     " + String.format("%-21s%-26s%-19s%7s", "title", "artist", "minutes", "seconds"));
+                playList.printAllSongs();
+                break;
             }
             case "R": {
-                   removeSong();
+                removeSong();
                 break;
             }
             case "S": {
-                System.out.println("Size = : " + playList.getSize());
+                int s = playList.getSize();
+                if (s == 1) {
+                    System.out.println("there is only 1 song in the playlist");
+                } else {
+                    System.out.println("there are " + s + " songs in the playList ");
+                }
                 break;
 
             }
             case "G": {
                 System.out.println("Enter position of the song : ");
-                playList.getSong(takeInputInt());
+                System.out.println(playList.getSong(takeInputInt()).toString());
                 break;
-
             }
             case "B": {
+                System.out.println("Enter the artist name to get all the songs by the artists ");
+                PlayList playListByArtist = playList.getSongsByArtist(playList,takeInputString());
+                System.out.println(playListByArtist != null? playListByArtist.toString():"There are no songs by the enetered artist");
                 break;
-
-
             }
             case "Q": {
                 System.out.println("Now exiting......");
                 System.exit(0);
                 break;
             }
-            default:{
+            default: {
                 System.out.println("Invalid Option. Select a valid option");
                 printMenu();
                 processMenuOption(takeInputString());
@@ -110,11 +113,15 @@ public class PlayListOperations {
 
     public static void main(String args[]) {
 
-        while(true) {
-            printMenu();
-            processMenuOption(takeInputString());
-            System.out.println("press any key to continue ....");
-            takeInputString();
+        while (true) {
+            try {
+                printMenu();
+                processMenuOption(takeInputString());
+                System.out.println("press enter to continue ....");
+                takeInputString();
+            } catch (Exception ex) {
+                System.out.println(ex);
+            }
         }
     }
 }

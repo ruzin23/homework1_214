@@ -52,9 +52,32 @@ public class SongRecord {
         this.seconds = seconds;
     }
 
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this) {
+            return true;
+        }
+
+        if (!(obj instanceof SongRecord)) {
+            return false;
+        }
+
+        SongRecord song = (SongRecord) obj;
+
+        if (this.title.equals(song.getTitle()) && this.artist.equals(song.getArtist()) &&
+                this.minutes == song.getMinutes() && this.seconds == song.getSeconds()) {
+            return true;
+        }
+
+        return false;
+
+    }
+
+
     @Override
     public String toString() {
-        return "Song title : " + this.title + "\n" + "Artist : " + this.artist + "\n" + "minutes : " + this.minutes + "\n" + "seconds: " + this.seconds + "\n";
+        return String.format("%-21s%-26s%-19s%d", this.title, this.artist, this.minutes, this.seconds);
     }
 
 
